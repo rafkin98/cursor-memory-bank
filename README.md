@@ -65,7 +65,11 @@ graph TD
 
 ## About Memory Bank
 
-Memory Bank is a structured development workflow system that guides you through an 11-stage pipeline with built-in security gates. It works with two platforms:
+AI coding assistants like Cursor and Claude are powerful, but they lose context between sessions, have no structured workflow, and don't enforce quality gates. You end up re-explaining your project, skipping security checks, and making ad-hoc decisions that aren't documented anywhere.
+
+Memory Bank solves this by giving the AI **persistent memory** and a **structured pipeline**. Every decision, plan, review, and lesson is written to disk in `memory-bank/`, so context survives across sessions, tasks, and even team members. The 11-stage pipeline ensures that security scans, code reviews, and acceptance tests actually happen — not just when you remember to ask for them.
+
+It works with two platforms:
 
 - **Cursor IDE** — 11 individual `/commands` you run stage by stage, with visual maps and rule loading
 - **Claude Code** — a single `/orchestrate` command that runs the entire pipeline automatically using subagents
