@@ -963,6 +963,28 @@ After 3 failed loops on any stage, the orchestrator stops and asks for your guid
 | You're learning the pipeline stages | **Cursor IDE** |
 | You're running production-grade tasks | **Either** |
 
+### Setup for Cursor IDE
+
+The quickest way to set up Cursor IDE support in an existing project is with the bundled init script:
+
+```bash
+sh /path/to/memory-bank-system/.cursor/init-memory-bank.sh /path/to/your/project
+```
+
+This copies the `memory-bank/` directory structure, commands, rules, visual maps, and `.cursorindexingignore` into your project. Use `--force` to overwrite existing files:
+
+```bash
+sh /path/to/memory-bank-system/.cursor/init-memory-bank.sh --force /path/to/your/project
+```
+
+Alternatively, copy manually:
+1. Copy `.cursor/commands/` to your project
+2. Copy `.cursor/rules/` to your project
+3. Copy `.cursorindexingignore` to your project root
+4. Create `memory-bank/` directory structure
+
+Once set up, use the commands: `/van` → `/plan` → `/creative` → `/build` → `/reflect` → `/archive`
+
 ### Setup for Claude Code
 
 The quickest way to set up Claude Code support in an existing project is with the bundled init script:
