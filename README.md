@@ -166,7 +166,7 @@ Both platforms share the same `memory-bank/` directory and produce identical out
 Simply clone this repository into your project directory:
 
 ```bash
-git clone https://github.com/rafkin98/cursor-memory-bank.git
+git clone https://github.com/vanzan01/cursor-memory-bank.git
 ```
 
 #### Alternative (Manual)
