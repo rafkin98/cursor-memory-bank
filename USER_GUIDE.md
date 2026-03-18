@@ -968,13 +968,13 @@ After 3 failed loops on any stage, the orchestrator stops and asks for your guid
 The quickest way to set up Claude Code support in an existing project is with the bundled init script:
 
 ```bash
-sh /path/to/cursor-memory-bank/.claude/init-memory-bank.sh /path/to/your/project
+sh /path/to/memory-bank-system/.claude/init-memory-bank.sh /path/to/your/project
 ```
 
 This creates the full `memory-bank/` directory structure, copies templates, settings, and the orchestrate skill into your project. Use `--force` to overwrite existing files:
 
 ```bash
-sh /path/to/cursor-memory-bank/.claude/init-memory-bank.sh --force /path/to/your/project
+sh /path/to/memory-bank-system/.claude/init-memory-bank.sh --force /path/to/your/project
 ```
 
 Alternatively, set things up manually:
