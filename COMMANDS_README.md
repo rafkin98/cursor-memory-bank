@@ -1,13 +1,16 @@
 # Memory Bank Commands
 
-This directory contains Cursor 2.0 commands that replace the deprecated custom modes feature. Each command implements a specific phase of the Memory Bank workflow with progressive rule loading to optimize context usage.
+This directory contains Cursor 2.0 commands and Claude Code skills that implement the Memory Bank v1.0 pipeline. The system supports two interfaces:
 
-## Available Commands
+- **Cursor IDE** — 11 individual `/commands` you run stage by stage
+- **Claude Code** — a single `/orchestrate` skill that runs the full pipeline automatically
+
+## Available Commands (Cursor IDE)
 
 ### `/van` - Initialization & Entry Point
 **Purpose:** Initialize Memory Bank, detect platform, determine task complexity, and route to appropriate workflows.
 
-**When to use:** 
+**When to use:**
 - Starting a new task or project
 - Initializing Memory Bank structure
 - Determining task complexity
@@ -45,43 +48,121 @@ This directory contains Cursor 2.0 commands that replace the deprecated custom m
 - Ready to start coding
 
 **Next steps:**
-- After implementation complete → `/reflect`
+- After implementation complete → `/scan`
+
+### `/scan` - Security Analysis
+**Purpose:** Static security analysis to catch vulnerabilities before code review. Uses SAST, dependency auditing, secrets scanning, and OWASP compliance assessment.
+
+**When to use:**
+- After `/build` completes implementation
+- Level 2: 10-point security checklist
+- Level 3-4: Full 25-point security rubric
+
+**Verdicts:**
+- **PASS** (no high/critical findings) → `/judge`
+- **CONDITIONAL** (medium findings only) → `/judge` with security notes
+- **FAIL** (high/critical findings) → `/build` for remediation
+
+### `/judge` - Code Review
+**Purpose:** Rubric-based code quality assessment with scoring across 5 categories.
+
+**When to use:**
+- After `/scan` passes or conditionally passes
+- Level 2: 10-point checklist
+- Level 3-4: Full 25-point rubric
+
+**Verdicts:**
+- **PASS** (>= 80%) → `/integrate` (L3-4) or `/reflect` (L2)
+- **CONDITIONAL** (60-79%) → proceed with notes
+- **FAIL** (< 60%) → `/build` to fix critical issues
+
+### `/integrate` - Integration & Release Prep
+**Purpose:** Merge components, resolve dependencies, verify the build, run integration tests.
+
+**When to use:**
+- After `/judge` passes (Level 3-4 only)
+
+**Verdicts:**
+- **PASS** → `/validate`
+- **FAIL** (build errors) → `/build`
+- **FAIL** (quality issues) → `/judge`
+
+### `/validate` - End-to-End Testing
+**Purpose:** Behavioral testing, acceptance criteria verification, regression testing, traceability matrix.
+
+**When to use:**
+- After `/integrate` passes (Level 3-4 only)
+
+**Verdicts:**
+- **PASS** → `/pentest` (L3-4) or `/reflect` (L2)
+- **FAIL** (code bug) → `/build`
+- **FAIL** (integration issue) → `/integrate`
+
+### `/pentest` - Penetration Testing
+**Purpose:** Dynamic security testing against the integrated system. Tests auth, injection vectors, API security, and input validation.
+
+**When to use:**
+- After `/validate` passes (Level 3-4 only)
+- Requires a testable integrated system
+
+**Verdicts:**
+- **PASS** (no critical/high findings) → `/reflect`
+- **FAIL** (code bug) → `/build`
+- **FAIL** (config issue) → `/integrate`
 
 ### `/reflect` - Task Reflection
 **Purpose:** Facilitate structured reflection on completed implementation.
 
 **When to use:**
-- After `/build` completes implementation
+- After security and quality gates pass
 - Need to document lessons learned and process improvements
 
 **Next steps:**
-- After reflection complete → `/archive`
+- Level 1-3 → task complete (or `/archive` for L3 optionally)
+- Level 4 → `/archive`
 
 ### `/archive` - Task Archiving
 **Purpose:** Create comprehensive archive documentation and update Memory Bank.
 
 **When to use:**
-- After `/reflect` completes reflection
+- After `/reflect` completes (Level 4 mandatory, Level 3 recommended)
 - Ready to finalize task documentation
 
 **Next steps:**
 - After archiving complete → `/van` (for next task)
 
-## Command Workflow
+## Claude Code: `/orchestrate`
+
+Claude Code uses a single command that runs the entire pipeline automatically:
 
 ```
-/van → /plan → /creative → /build → /reflect → /archive
-  ↓       ↓        ↓         ↓         ↓          ↓
-Level 1  Level   Level    Level    Level     Level
-tasks    2-4     3-4      1-4      1-4       1-4
+/orchestrate Add user authentication with OAuth2 support
+```
+
+The orchestrator spawns each stage as a subagent, parses verdicts, and routes failures automatically. No individual commands needed. See `.claude/skills/orchestrate/SKILL.md` for details.
+
+## Command Workflows by Complexity
+
+```
+Level 1 (Bug Fix):
+  /van → /build → /reflect
+
+Level 2 (Enhancement):
+  /van → /plan → /build → /scan → /judge → /reflect
+
+Level 3 (Feature):
+  /van → /plan → /creative → /build → /scan → /judge → /integrate → /validate → /pentest → /reflect
+
+Level 4 (System):
+  /van → /plan → /creative → /build → /scan → /judge → /integrate → /validate → /pentest → /reflect → /archive
 ```
 
 ## Progressive Rule Loading
 
 Each command implements progressive rule loading to optimize context usage:
 
-1. **Core Rules** - Always loaded (main.mdc, memory-bank-paths.mdc)
-2. **Mode-Specific Rules** - Loaded based on command (mode maps)
+1. **Core Rules** - Always loaded (main.mdc, memory-bank-paths.mdc, agent-roles.mdc)
+2. **Mode-Specific Rules** - Loaded based on command (visual maps)
 3. **Complexity-Specific Rules** - Loaded based on task complexity level
 4. **Specialized Rules** - Lazy loaded only when needed (e.g., creative phase types)
 
@@ -96,40 +177,12 @@ All commands read from and update files in the `memory-bank/` directory:
 - **progress.md** - Implementation status
 - **projectbrief.md** - Project foundation
 - **creative/** - Creative phase documents
+- **security/** - Security scan and pentest reports
+- **review/** - Code review reports
+- **integration/** - Integration reports
+- **validation/** - Validation reports
 - **reflection/** - Reflection documents
 - **archive/** - Archive documents
-
-## Usage Examples
-
-### Starting a New Task
-```
-/van Initialize project for adding user authentication feature
-```
-
-### Planning a Feature
-```
-/plan
-```
-
-### Exploring Design Options
-```
-/creative
-```
-
-### Implementing Changes
-```
-/build
-```
-
-### Reflecting on Completion
-```
-/reflect
-```
-
-### Archiving Completed Task
-```
-/archive
-```
 
 ## Migration from Custom Modes
 
@@ -138,8 +191,12 @@ These commands replace the previous custom modes:
 - **PLAN Mode** → `/plan` command
 - **CREATIVE Mode** → `/creative` command
 - **BUILD Mode** → `/build` command
+- **SCAN Mode** → `/scan` command (new in v1.0)
+- **JUDGE Mode** → `/judge` command
+- **INTEGRATE Mode** → `/integrate` command
+- **VALIDATE Mode** → `/validate` command
+- **PENTEST Mode** → `/pentest` command (new in v1.0)
 - **REFLECT Mode** → `/reflect` command
 - **ARCHIVE Mode** → `/archive` command
 
-The functionality remains the same, but now uses Cursor 2.0's commands feature instead of custom modes.
-
+The functionality remains the same, but now uses Cursor 2.0's commands feature instead of custom modes. Claude Code users should use `/orchestrate` instead of individual commands.

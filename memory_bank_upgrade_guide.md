@@ -1,8 +1,10 @@
 # Memory Bank System Upgrade: From Monolithic to Modular
 
+> **Note:** This document was originally written for earlier versions of Memory Bank. As of v1.0, the system has evolved further — it now supports both **Cursor IDE** (11 individual `/commands`) and **Claude Code** (`/orchestrate` skill), and includes dedicated SCAN and PENTEST security stages. The architectural principles described here still apply.
+
 ## Introduction
 
-I'm excited to introduce a significant upgrade to the Memory Bank system – evolving from a monolithic all-in-one approach to a modular, graph-based system that integrates with Cursor's custom modes. This document explains the reasons behind this transition, its benefits, and how to get the most out of the new system.
+I'm excited to introduce a significant upgrade to the Memory Bank system – evolving from a monolithic all-in-one approach to a modular, graph-based system that integrates with Cursor's commands and Claude Code's orchestrator. This document explains the reasons behind this transition, its benefits, and how to get the most out of the new system.
 
 ```mermaid
 graph TD
@@ -204,7 +206,7 @@ Memory Bank transforms custom modes into a comprehensive, interconnected system:
    - Visual process maps guide users through the appropriate sequence
 
 2. **Workflow Integration**: 
-   - Modes form a cohesive development process (VAN → PLAN → CREATIVE → BUILD → QA)
+   - Modes form a cohesive development process (VAN → PLAN → CREATIVE → BUILD → SCAN → JUDGE → INTEGRATE → VALIDATE → PENTEST → REFLECT → ARCHIVE in v1.0)
    - Each mode is aware of preceding and subsequent modes
    - Transitions between modes are formalized with specific entry/exit criteria
 
@@ -444,7 +446,11 @@ My recommendations:
 - **Testing**: If you want to try the new system with an existing project, make a backup first and experiment in a safe environment
 - **Advanced Users**: Consider the new system for substantial development work on complex projects
 
-This is an experimental system that I've created as a personal hobby project. I encourage you to try it, provide feedback, and adapt it to your own workflows. By leveraging Cursor's custom modes and visual process maps, the new Memory Bank system provides a powerful framework for disciplined, systematic development that scales with project complexity.
+As of v1.0, the system supports two interfaces:
+- **Cursor IDE**: 11 individual `/commands` (van, plan, creative, build, scan, judge, integrate, validate, pentest, reflect, archive) — you run each stage manually
+- **Claude Code**: Single `/orchestrate` command that runs the full 11-stage pipeline automatically using subagents
+
+This is an experimental system that I've created as a personal hobby project. I encourage you to try it, provide feedback, and adapt it to your own workflows. By leveraging Cursor's commands and Claude Code's orchestrator, the new Memory Bank system provides a powerful framework for disciplined, systematic development that scales with project complexity.
 
 ---
 

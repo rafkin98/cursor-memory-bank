@@ -254,4 +254,4 @@ The goal is to maintain the core methodology while continually improving its pra
 
 ---
 
-*Note: This document describes how Memory Bank v0.6-beta implements concepts similar to Claude's "Think" tool methodology. The implementation will continue to evolve as both systems mature.* 
+*Note: This document describes how Memory Bank implements concepts similar to Claude's "Think" tool methodology. In v1.0, the CREATIVE stage is available as the `/creative` command in Cursor IDE and as an automated subagent within the `/orchestrate` skill in Claude Code. The implementation will continue to evolve as both systems mature.* 
