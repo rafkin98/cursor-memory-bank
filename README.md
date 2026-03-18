@@ -173,9 +173,23 @@ Simply clone this repository into your project directory:
 git clone https://github.com/rafkin98/memory-bank-system.git
 ```
 
+#### Quick Setup with Init Script (Cursor IDE)
+
+To scaffold the Memory Bank into an existing project for Cursor IDE:
+
+```bash
+sh memory-bank-system/.cursor/init-memory-bank.sh /path/to/your/project
+```
+
+This copies the `memory-bank/` directory structure, commands, rules, visual maps, and `.cursorindexingignore` into your project. Use `--force` to overwrite existing files:
+
+```bash
+sh memory-bank-system/.cursor/init-memory-bank.sh --force /path/to/your/project
+```
+
 #### Quick Setup with Init Script (Claude Code)
 
-To scaffold the Memory Bank into an existing project, run the bundled init script:
+To scaffold the Memory Bank into an existing project for Claude Code:
 
 ```bash
 sh memory-bank-system/.claude/init-memory-bank.sh /path/to/your/project
