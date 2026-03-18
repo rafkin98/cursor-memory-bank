@@ -4,39 +4,61 @@ An 11-stage development pipeline with built-in security gates, supporting both *
 
 ```mermaid
 graph TD
-    Main["Memory Bank System v1.0"] --> Cursor["Cursor IDE<br>11 Individual Commands"]
-    Main --> Claude["Claude Code<br>/orchestrate Skill"]
-    Main --> Rules["Hierarchical Rule Loading"]
-    Main --> Memory["Shared Memory Bank"]
+    Main["Memory Bank System v1.0<br/><span style='font-size:12px'>11‑stage secure dev pipeline</span>"]
 
-    subgraph "Cursor Commands"
-        VAN["/van"] --> PLAN["/plan"] --> CREATIVE["/creative"] --> BUILD["/build"]
-        BUILD --> SCAN["/scan"] --> JUDGE["/judge"] --> INTEGRATE["/integrate"]
-        INTEGRATE --> VALIDATE["/validate"] --> PENTEST["/pentest"] --> REFLECT["/reflect"]
-        REFLECT --> ARCHIVE["/archive"]
+    Main --> CursorBlock
+    Main --> ClaudeBlock
+    Main --> Rules["Rules Engine<br/><code>.cursor/rules</code> &amp; <code>.claude/rules</code>"]
+    Main --> MemoryBlock
+
+    %% Cursor: manual command workflow
+    subgraph CursorBlock["Cursor IDE • Manual workflow"]
+        direction TB
+        CEntry["/van<br/><span style='font-size:11px'>analyze task &amp; choose level</span>"]
+        CPlan["/plan"]
+        CCreative["/creative"]
+        CBuild["/build"]
+        CScan["/scan"]
+        CJudge["/judge"]
+        CIntegrate["/integrate"]
+        CValidate["/validate"]
+        CPentest["/pentest"]
+        CReflect["/reflect"]
+        CArchive["/archive"]
+
+        CEntry --> CPlan --> CCreative --> CBuild
+        CBuild --> CScan --> CJudge --> CIntegrate
+        CIntegrate --> CValidate --> CPentest --> CReflect --> CArchive
     end
 
-    subgraph "Claude Code"
-        Orchestrate["/orchestrate"] --> Agents["Spawns each stage<br>as a subagent"]
-        Agents --> Verdicts["Parses verdicts &<br>routes automatically"]
+    %% Claude: orchestrated workflow
+    subgraph ClaudeBlock["Claude Code • Orchestrated workflow"]
+        direction TB
+        Orchestrate["/orchestrate"]
+        Agents["Stage agents (VAN…REFLECT)"]
+        Routing["Reads verdicts<br/>auto‑routes between stages"]
+
+        Orchestrate --> Agents --> Routing
     end
 
-    subgraph "Memory Bank (shared)"
-        Tasks["tasks.md"]
-        Progress["progress.md"]
-        Security["security/"]
-        Review["review/"]
-        Archive["archive/"]
+    %% Shared Memory Bank
+    subgraph MemoryBlock["Shared Memory Bank"]
+        direction TB
+        Tasks["tasks.md<br/><span style='font-size:11px'>task plan &amp; status</span>"]
+        Progress["progress.md<br/><span style='font-size:11px'>implementation log</span>"]
+        Active["activeContext.md<br/><span style='font-size:11px'>current stage</span>"]
+        Reports["security/, review/, validation/, integration/<br/><span style='font-size:11px'>pipeline reports</span>"]
+        ArchiveMb["archive/<br/><span style='font-size:11px'>completed tasks</span>"]
     end
 
-    Cursor --> Memory
-    Claude --> Memory
+    CursorBlock --> MemoryBlock
+    ClaudeBlock --> MemoryBlock
 
-    style Main fill:#4da6ff,stroke:#0066cc,color:white
-    style Cursor fill:#f8d486,stroke:#e8b84d,color:black
-    style Claude fill:#80ffaa,stroke:#4dbb5f,color:black
-    style Rules fill:#d9b3ff,stroke:#b366ff,color:black
-    style Memory fill:#f9d77e,stroke:#d9b95c,color:black
+    style Main fill:#1f78c1,stroke:#0b4470,color:#ffffff,stroke-width:2px
+    style CursorBlock fill:#ffe7b3,stroke:#e0b45c,color:#000000
+    style ClaudeBlock fill:#c1ffd9,stroke:#60b57f,color:#000000
+    style Rules fill:#e2ccff,stroke:#a56eff,color:#000000
+    style MemoryBlock fill:#fff7c2,stroke:#e0c462,color:#000000
 ```
 
 > **Personal Note**: This project is my personal hobby project that I develop for my own use in coding projects. I originally took inspiration from and forked the excellent [cursor-memory-bank](https://github.com/vanzan01/cursor-memory-bank) project by `vanzan01`, then evolved this fork to support both **Cursor IDE** commands and **Claude Code** orchestration. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, you can ask Cursor AI or Claude Code directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
