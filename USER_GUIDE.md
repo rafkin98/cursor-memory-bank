@@ -965,11 +965,24 @@ After 3 failed loops on any stage, the orchestrator stops and asks for your guid
 
 ### Setup for Claude Code
 
+The quickest way to set up Claude Code support in an existing project is with the bundled init script:
+
+```bash
+sh /path/to/cursor-memory-bank/.claude/init-memory-bank.sh /path/to/your/project
+```
+
+This creates the full `memory-bank/` directory structure, copies templates, settings, and the orchestrate skill into your project. Use `--force` to overwrite existing files:
+
+```bash
+sh /path/to/cursor-memory-bank/.claude/init-memory-bank.sh --force /path/to/your/project
+```
+
+Alternatively, set things up manually:
+
 1. Ensure `.claude/skills/orchestrate/SKILL.md` exists in your project
 2. Ensure `.claude/memory-bank-template/` exists (with `security/` subdirectory)
-3. Run `/orchestrate <task description>` — that's it
 
-No individual stage commands are needed. The orchestrator skill contains all stage agent prompts internally.
+Once set up, run `/orchestrate <task description>` — that's it. No individual stage commands are needed. The orchestrator skill contains all stage agent prompts internally.
 
 ---
 

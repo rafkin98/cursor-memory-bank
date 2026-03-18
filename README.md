@@ -169,6 +169,20 @@ Simply clone this repository into your project directory:
 git clone https://github.com/rafkin98/cursor-memory-bank.git
 ```
 
+#### Quick Setup with Init Script (Claude Code)
+
+To scaffold the Memory Bank into an existing project, run the bundled init script:
+
+```bash
+sh cursor-memory-bank/.claude/init-memory-bank.sh /path/to/your/project
+```
+
+This creates the `memory-bank/` directory structure, copies templates, settings, and the orchestrate skill into your project. Use `--force` to overwrite existing files:
+
+```bash
+sh cursor-memory-bank/.claude/init-memory-bank.sh --force /path/to/your/project
+```
+
 #### Alternative (Manual)
 
 After extracting it from the ZIP file:
