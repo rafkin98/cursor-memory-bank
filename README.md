@@ -71,7 +71,7 @@ Memory Bank solves this by giving the AI **persistent memory** and a **structure
 
 It works with two platforms:
 
-- **Cursor IDE** — 11 individual `/commands` you run stage by stage, with visual maps and rule loading
+- **Cursor IDE** — 11 individual `/commands` (that's update from original forked repo) you run stage by stage, with visual maps and rule loading
 - **Claude Code** — a single `/orchestrate` command that runs the entire pipeline automatically using subagents
 
 Both platforms share the same `memory-bank/` directory and produce identical outputs. The system uses hierarchical rule loading to optimize token usage and provides tailored guidance at each stage.
@@ -170,7 +170,7 @@ Both platforms share the same `memory-bank/` directory and produce identical out
 Simply clone this repository into your project directory:
 
 ```bash
-git clone https://github.com/rafkin98/cursor-memory-bank.git
+git clone https://github.com/rafkin98/memory-bank-system.git
 ```
 
 #### Quick Setup with Init Script (Claude Code)
@@ -178,13 +178,13 @@ git clone https://github.com/rafkin98/cursor-memory-bank.git
 To scaffold the Memory Bank into an existing project, run the bundled init script:
 
 ```bash
-sh cursor-memory-bank/.claude/init-memory-bank.sh /path/to/your/project
+sh memory-bank-system/.claude/init-memory-bank.sh /path/to/your/project
 ```
 
 This creates the `memory-bank/` directory structure, copies templates, settings, and the orchestrate skill into your project. Use `--force` to overwrite existing files:
 
 ```bash
-sh cursor-memory-bank/.claude/init-memory-bank.sh --force /path/to/your/project
+sh memory-bank-system/.claude/init-memory-bank.sh --force /path/to/your/project
 ```
 
 #### Alternative (Manual)
