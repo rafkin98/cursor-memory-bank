@@ -1,58 +1,76 @@
-# Memory Bank System v0.8
+# Claude | Cursor Memory Bank System 1.0
 
-A token-optimized, hierarchical task management system that uses Cursor 2.0 commands for efficient development workflows.
+An 11-stage development pipeline with built-in security gates, supporting both **Cursor IDE** (individual commands) and **Claude Code** (automated orchestrator).
 
 ```mermaid
 graph TD
-    Main["Memory Bank System"] --> Commands["Cursor 2.0 Commands"]
+    Main["Memory Bank System v1.0"] --> Cursor["Cursor IDE<br>11 Individual Commands"]
+    Main --> Claude["Claude Code<br>/orchestrate Skill"]
     Main --> Rules["Hierarchical Rule Loading"]
-    Main --> Visual["Visual Process Maps"]
-    Main --> Token["Token Optimization"]
-    Main --> Memory["Memory Bank Files"]
-    
-    Commands --> VAN["/van: Initialization"]
-    Commands --> PLAN["/plan: Task Planning"]
-    Commands --> CREATIVE["/creative: Design"]
-    Commands --> BUILD["/build: Implementation"]
-    Commands --> REFLECT["/reflect: Review"]
-    Commands --> ARCHIVE["/archive: Documentation"]
-    
-    Memory --> Tasks["tasks.md"]
-    Memory --> Active["activeContext.md"]
-    Memory --> Progress["progress.md"]
-    Memory --> Creative["creative/"]
-    Memory --> Archive["archive/"]
-    
+    Main --> Memory["Shared Memory Bank"]
+
+    subgraph "Cursor Commands"
+        VAN["/van"] --> PLAN["/plan"] --> CREATIVE["/creative"] --> BUILD["/build"]
+        BUILD --> SCAN["/scan"] --> JUDGE["/judge"] --> INTEGRATE["/integrate"]
+        INTEGRATE --> VALIDATE["/validate"] --> PENTEST["/pentest"] --> REFLECT["/reflect"]
+        REFLECT --> ARCHIVE["/archive"]
+    end
+
+    subgraph "Claude Code"
+        Orchestrate["/orchestrate"] --> Agents["Spawns each stage<br>as a subagent"]
+        Agents --> Verdicts["Parses verdicts &<br>routes automatically"]
+    end
+
+    subgraph "Memory Bank (shared)"
+        Tasks["tasks.md"]
+        Progress["progress.md"]
+        Security["security/"]
+        Review["review/"]
+        Archive["archive/"]
+    end
+
+    Cursor --> Memory
+    Claude --> Memory
+
     style Main fill:#4da6ff,stroke:#0066cc,color:white
-    style Commands fill:#f8d486,stroke:#e8b84d,color:black
-    style Rules fill:#80ffaa,stroke:#4dbb5f,color:black
-    style Visual fill:#d9b3ff,stroke:#b366ff,color:black
-    style Token fill:#ff9980,stroke:#ff5533,color:black
+    style Cursor fill:#f8d486,stroke:#e8b84d,color:black
+    style Claude fill:#80ffaa,stroke:#4dbb5f,color:black
+    style Rules fill:#d9b3ff,stroke:#b366ff,color:black
     style Memory fill:#f9d77e,stroke:#d9b95c,color:black
 ```
 
-> **Personal Note**: Memory Bank is my personal hobby project that I develop for my own use in coding projects. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, one of the great advantages is that you can ask the Cursor AI directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
+> **Personal Note**: Memory Bank is my personal hobby project that I develop for my own use in coding projects. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, you can ask Cursor AI or Claude Code directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
 
 ## About Memory Bank
 
-Memory Bank is a structured development workflow system that uses Cursor 2.0 commands to guide you through different phases of the development process. It uses a hierarchical rule loading architecture that loads only the rules needed for each phase, optimizing token usage and providing tailored guidance.
+Memory Bank is a structured development workflow system that guides you through an 11-stage pipeline with built-in security gates. It works with two platforms:
+
+- **Cursor IDE** — 11 individual `/commands` you run stage by stage, with visual maps and rule loading
+- **Claude Code** — a single `/orchestrate` command that runs the entire pipeline automatically using subagents
+
+Both platforms share the same `memory-bank/` directory and produce identical outputs. The system uses hierarchical rule loading to optimize token usage and provides tailored guidance at each stage.
 
 ### How It Works
 
-Version 0.8 moves from cursor custom modes to cursor commands.  Memory Bank operates through **six specialized commands** that work together as an integrated workflow:
+Version 1.0 introduces an 11-stage pipeline with security gates. Memory Bank operates through **eleven specialized commands** that work together as an integrated workflow:
 
 1. **`/van`** - Initializes projects, detects platform, determines task complexity
 2. **`/plan`** - Creates detailed implementation plans based on complexity level
 3. **`/creative`** - Explores design options for components requiring design decisions
 4. **`/build`** - Systematically implements planned changes
-5. **`/reflect`** - Reviews completed work and documents lessons learned
-6. **`/archive`** - Creates comprehensive documentation and updates Memory Bank
+5. **`/scan`** - Static security analysis, dependency audit, secrets scanning
+6. **`/judge`** - Rubric-based code review with scoring and verdicts
+7. **`/integrate`** - Component merging, dependency resolution, build verification
+8. **`/validate`** - End-to-end behavioral testing and acceptance verification
+9. **`/pentest`** - Dynamic security testing and penetration testing (Level 3-4)
+10. **`/reflect`** - Reviews completed work and documents lessons learned
+11. **`/archive`** - Creates comprehensive documentation and updates Memory Bank
 
 Each command reads from and updates a shared **Memory Bank** directory (`memory-bank/`), maintaining persistent context across the entire workflow.
 
 ### Token-Optimized Architecture
 
-Version 0.7 introduced significant token optimization improvements:
+The system includes significant token optimization improvements:
 
 - **Hierarchical Rule Loading**: Only loads essential rules initially with specialized lazy-loading (~70% token reduction)
 - **Progressive Documentation**: Implements concise templates that scale with task complexity
@@ -67,7 +85,7 @@ See the [Memory Bank Optimizations](MEMORY_BANK_OPTIMIZATIONS.md) document for d
 Memory Bank transforms development into a structured, phase-based process:
 
 - **Graph-Based Command Integration**: Commands are interconnected nodes in a development workflow
-- **Workflow Progression**: Commands transition from one to another in a logical sequence (`/van` → `/plan` → `/creative` → `/build` → `/reflect` → `/archive`)
+- **Workflow Progression**: Commands transition from one to another in a logical sequence (`/van` → `/plan` → `/creative` → `/build` → `/scan` → `/judge` → `/integrate` → `/validate` → `/pentest` → `/reflect` → `/archive`)
 - **Shared Memory**: Persistent state maintained across command transitions via Memory Bank files
 - **Adaptive Behavior**: Each command adjusts its recommendations based on project complexity level
 - **Progressive Rule Loading**: Commands load only necessary rules, reducing context window usage
@@ -76,7 +94,7 @@ This approach transforms development from ad-hoc coding into a coordinated syste
 
 ### CREATIVE Command and Claude's "Think" Tool
 
-The `/creative` command is conceptually based on Anthropic's Claude "Think" tool methodology, as described in their [engineering blog](https://www.anthropic.com/engineering/claude-think-tool). Version 0.8 implements an optimized version with:
+The `/creative` command is conceptually based on Anthropic's Claude "Think" tool methodology, as described in their [engineering blog](https://www.anthropic.com/engineering/claude-think-tool). Version 1.0 implements an optimized version with:
 
 - Progressive documentation with tabular option comparison
 - "Detail-on-demand" approach that preserves token efficiency
@@ -85,9 +103,26 @@ The `/creative` command is conceptually based on Anthropic's Claude "Think" tool
 
 For a detailed explanation of how Memory Bank implements these principles, see the [CREATIVE Mode and Claude's "Think" Tool](creative_mode_think_tool.md) document.
 
+## Supported Platforms
+
+Memory Bank v1.0 works with both **Cursor IDE** and **Claude Code CLI**:
+
+| Feature | Cursor IDE | Claude Code |
+|---------|-----------|-------------|
+| **Interface** | 11 individual `/commands` | Single `/orchestrate` command |
+| **Workflow** | Manual stage-by-stage | Fully automated multi-agent |
+| **User control** | Run each stage yourself | Pipeline runs autonomously |
+| **Security stages** | `/scan` and `/pentest` commands | Built into orchestrator |
+| **Setup** | `.cursor/` directory | `.claude/skills/orchestrate/` |
+
+Both platforms share the same `memory-bank/` directory and produce identical outputs.
+
 ## Key Features
 
+- **Dual Platform Support**: Works with both Cursor IDE (commands) and Claude Code (orchestrator)
+- **11-Stage Security Pipeline**: Dedicated SCAN and PENTEST stages catch vulnerabilities early
 - **Cursor 2.0 Commands**: Native integration with Cursor's commands feature - no setup required
+- **Claude Code Orchestrator**: Single `/orchestrate` command runs the full pipeline automatically
 - **Hierarchical Rule Loading**: Load only the essential rules with specialized lazy-loading
 - **Progressive Documentation**: Concise templates that scale with task complexity
 - **Unified Context Transfer**: Efficient context preservation between commands via Memory Bank
@@ -100,8 +135,9 @@ For a detailed explanation of how Memory Bank implements these principles, see t
 
 ### Prerequisites
 
-- **Cursor Editor**: Version 2.0 or higher is required (commands feature)
-- **AI Model**: Claude 4 Sonnet or Claude 4 Opus is recommended for best results, especially for `/creative` command's "Think" tool methodology
+- **AI Model**: Claude 4 Sonnet or Claude 4 Opus is recommended for best results
+- **For Cursor**: Version 2.0 or higher (commands feature)
+- **For Claude Code**: Claude Code CLI installed
 
 ### Step 1: Get the Files
 
@@ -115,12 +151,13 @@ git clone https://github.com/vanzan01/cursor-memory-bank.git
 
 After extracting it from the ZIP file:
 
-- Copy the `.cursor` folder to your project directory (contains both rules and commands)
-- The `custom_modes` folder is kept for reference but not required
+- Copy the `.cursor` folder to your project directory (for Cursor IDE)
+- Copy the `.claude` folder to your project directory (for Claude Code)
+- Both can coexist — they share the same `memory-bank/` output directory
 
 **Note**: Other documents are not necessary for Memory Bank operation - they are explanatory documents. You can copy them to a folder like `memory_bank_documents` if desired.
 
-### Step 2: Using Commands
+### Step 2a: Using Cursor IDE
 
 **Commands are ready to use immediately!** No additional setup required.
 
@@ -129,6 +166,11 @@ After extracting it from the ZIP file:
    - `/plan` - Task planning
    - `/creative` - Design decisions
    - `/build` - Code implementation
+   - `/scan` - Security analysis
+   - `/judge` - Code review
+   - `/integrate` - Integration & release prep
+   - `/validate` - End-to-end testing
+   - `/pentest` - Penetration testing (Level 3-4)
    - `/reflect` - Task reflection
    - `/archive` - Task archiving
 
@@ -137,9 +179,48 @@ After extracting it from the ZIP file:
    /van Initialize project for adding user authentication feature
    ```
 
-3. **Follow the workflow** - each command will guide you to the next step
+3. **Follow the workflow** - each command tells you what to run next
 
-See [`.cursor/commands/README.md`](.cursor/commands/README.md) for detailed command documentation.
+See [`COMMANDS_README.md`](COMMANDS_README.md) for detailed command documentation.
+
+### Step 2b: Using Claude Code
+
+Claude Code uses a single `/orchestrate` command that runs the entire pipeline automatically.
+
+1. **Ensure the skill is loaded**: The `.claude/skills/orchestrate/SKILL.md` file must be in your project
+2. **Run the orchestrator**:
+   ```
+   /orchestrate Add user authentication with OAuth2 support
+   ```
+3. **The pipeline runs automatically**:
+   - Each stage spawns as a subagent (VAN, PLAN, CREATIVE, BUILD, SCAN, JUDGE, etc.)
+   - Verdicts are parsed and failures route back automatically
+   - You only intervene if a stage fails repeatedly (3 loops max)
+   - Progress updates appear after each stage completes
+
+**How it differs from Cursor:**
+
+| Aspect | Cursor IDE | Claude Code |
+|--------|-----------|-------------|
+| Commands | 11 individual `/commands` you run manually | Single `/orchestrate` runs everything |
+| Control | You decide when to move to the next stage | Orchestrator advances automatically |
+| Failures | Stage tells you to go back; you re-run | Orchestrator loops back automatically |
+| Visibility | Full stage output in chat | Progress summary after each stage |
+| Security | Run `/scan` and `/pentest` yourself | SCAN and PENTEST run as subagents |
+
+**Example output:**
+```
+[VAN] Complete — Level 3 assessed, 10-stage pipeline
+[PLAN] Complete — 5 tasks identified, 1 component flagged for creative
+[CREATIVE] Complete — 1 design decision documented
+[BUILD] Complete — 5/5 tasks implemented, 12 files modified
+[SCAN] Complete — Score: 23/25 (92%) PASS, 0 critical, 0 high
+[JUDGE] Complete — Score: 22/25 (88%) PASS
+[INTEGRATE] Complete — Build passes, 45/45 tests pass
+[VALIDATE] Complete — 5/5 acceptance criteria verified, PASS
+[PENTEST] Complete — 0 critical, 0 high findings, PASS
+[REFLECT] Complete — Pipeline finished, 0 rework cycles
+```
 
 ## Basic Usage
 
@@ -163,12 +244,17 @@ See [`.cursor/commands/README.md`](.cursor/commands/README.md) for detailed comm
 
    **Level 2 (Simple Enhancement):**
    ```
-   /van → /plan → /build → /reflect → /archive
+   /van → /plan → /build → /scan → /judge → /reflect
    ```
 
-   **Level 3-4 (Feature/System):**
+   **Level 3 (Feature):**
    ```
-   /van → /plan → /creative → /build → /reflect → /archive
+   /van → /plan → /creative → /build → /scan → /judge → /integrate → /validate → /pentest → /reflect
+   ```
+
+   **Level 4 (System):**
+   ```
+   /van → /plan → /creative → /build → /scan → /judge → /integrate → /validate → /pentest → /reflect → /archive
    ```
 
 ### Command Reference
@@ -248,7 +334,7 @@ See [`.cursor/commands/README.md`](.cursor/commands/README.md) for detailed comm
 - Updates `memory-bank/tasks.md` and `memory-bank/progress.md`
 
 **Next steps:**
-- After implementation complete → `/reflect`
+- After implementation complete → `/scan`
 
 #### `/reflect` - Task Reflection
 **Purpose:** Facilitate structured reflection on completed implementation.
@@ -308,11 +394,23 @@ Here's a complete example workflow for a Level 3 feature:
 # Step 4: Implement the feature
 /build
 
-# Step 5: Reflect on the implementation
-/reflect
+# Step 5: Security scan
+/scan
 
-# Step 6: Archive the completed task
-/archive
+# Step 6: Code review
+/judge
+
+# Step 7: Integration
+/integrate
+
+# Step 8: Validation
+/validate
+
+# Step 9: Penetration testing
+/pentest
+
+# Step 10: Reflect on the implementation
+/reflect
 ```
 
 ## Memory Bank Structure
@@ -353,6 +451,11 @@ graph LR
 ### Generated Files
 
 - **`creative/creative-[feature_name].md`**: Design decision documents (Level 3-4)
+- **`security/scan-[task_id].md`**: Security scan reports (Level 2-4)
+- **`security/pentest-[task_id].md`**: Penetration test reports (Level 3-4)
+- **`review/review-[task_id].md`**: Code review reports (Level 2-4)
+- **`integration/integration-[task_id].md`**: Integration reports (Level 3-4)
+- **`validation/validation-[task_id].md`**: Validation reports (Level 3-4)
 - **`reflection/reflection-[task_id].md`**: Reflection documents
 - **`archive/archive-[task_id].md`**: Archive documents for completed tasks
 
@@ -386,24 +489,24 @@ This approach reduces initial token usage by **~70%** compared to loading all ru
 Memory Bank adapts its workflow based on task complexity:
 
 ### Level 1: Quick Bug Fix
-- **Workflow**: `/van` → `/build` → `/reflect` → `/archive`
+- **Workflow**: `/van` → `/build` → `/reflect`
 - **Characteristics**: Single file changes, targeted fixes
 - **Documentation**: Minimal, focused on the fix
 
 ### Level 2: Simple Enhancement
-- **Workflow**: `/van` → `/plan` → `/build` → `/reflect` → `/archive`
+- **Workflow**: `/van` → `/plan` → `/build` → `/scan` → `/judge` → `/reflect`
 - **Characteristics**: Multiple files, clear requirements
-- **Documentation**: Basic plan, implementation steps
+- **Documentation**: Basic plan, security scan, code review
 
 ### Level 3: Intermediate Feature
-- **Workflow**: `/van` → `/plan` → `/creative` → `/build` → `/reflect` → `/archive`
+- **Workflow**: `/van` → `/plan` → `/creative` → `/build` → `/scan` → `/judge` → `/integrate` → `/validate` → `/pentest` → `/reflect`
 - **Characteristics**: New components, design decisions needed
-- **Documentation**: Comprehensive plan, creative phases, detailed reflection
+- **Documentation**: Comprehensive plan, creative phases, security gates, detailed reflection
 
 ### Level 4: Complex System
-- **Workflow**: `/van` → `/plan` → `/creative` → `/build` → `/reflect` → `/archive`
+- **Workflow**: `/van` → `/plan` → `/creative` → `/build` → `/scan` → `/judge` → `/integrate` → `/validate` → `/pentest` → `/reflect` → `/archive`
 - **Characteristics**: Multiple subsystems, architectural decisions
-- **Documentation**: Phased implementation, architectural diagrams, comprehensive archive
+- **Documentation**: Phased implementation, security gates, architectural diagrams, comprehensive archive
 
 ## Troubleshooting
 
@@ -436,11 +539,11 @@ Memory Bank adapts its workflow based on task complexity:
 
 > **Note**: Custom modes are deprecated in favor of Cursor 2.0 commands. If you're using Cursor 2.0+, please use commands instead. Custom modes setup instructions are available in the `custom_modes/` directory for reference only.
 
-If you're using an older version of Cursor that doesn't support commands, see the [Commands Migration Guide](COMMANDS_MIGRATION.md) for information about the legacy custom modes setup.
+If you're using an older version of Cursor that doesn't support commands, see the [Commands Migration Guide](CURSOR_COMMANDS_MIGRATION.md) for information about the legacy custom modes setup.
 
 ## Version Information
 
-This is version v0.8 of the Memory Bank system. It introduces significant token optimization improvements over v0.7-beta while maintaining all functionality. See the [Release Notes](RELEASE_NOTES.md) for detailed information about the changes.
+This is version v1.0 of the Memory Bank system. It introduces an 11-stage pipeline with dedicated SCAN and PENTEST security stages, Claude Code orchestrator support, and all prior token optimization improvements. See the [Release Notes](RELEASE_NOTES.md) for detailed information about the changes.
 
 ### Ongoing Development
 
@@ -453,8 +556,8 @@ The Memory Bank system is actively being developed and improved. Key points to u
 
 ## Resources
 
-- [Commands Documentation](.cursor/commands/README.md) - Detailed command usage guide
-- [Commands Migration Guide](COMMANDS_MIGRATION.md) - Migration from custom modes to commands
+- [Commands Documentation](COMMANDS_README.md) - Detailed command usage guide
+- [Commands Migration Guide](CURSOR_COMMANDS_MIGRATION.md) - Migration from custom modes to commands
 - [Memory Bank Optimizations](MEMORY_BANK_OPTIMIZATIONS.md) - Detailed overview of token efficiency improvements
 - [Release Notes](RELEASE_NOTES.md) - Information about the latest changes
 - [Memory Bank Upgrade Guide](memory_bank_upgrade_guide.md) - Understanding the new architecture
@@ -470,4 +573,4 @@ As mentioned in the personal note above, Memory Bank is a personal project. Howe
 
 ---
 
-*Note: This README is for v0.8 and subject to change as the system evolves.*
+*Note: This README is for v1.0 and subject to change as the system evolves.*

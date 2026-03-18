@@ -2,6 +2,59 @@
 
 > **Personal Note**: Memory Bank is my personal hobby project that I develop for my own use in coding projects. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, one of the great advantages is that you can ask the Cursor AI directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
 
+## Version 1.0 - Security Pipeline & Claude Code Orchestrator
+
+> Building upon Memory Bank v0.8, this release adds dedicated security stages (SCAN and PENTEST) to the pipeline, expands from 9 to 11 stages, and introduces Claude Code support via the `/orchestrate` skill.
+
+### 🌟 Major Features
+
+#### 11-Stage Security Pipeline
+- **SCAN stage** — Static security analysis between BUILD and JUDGE (L2/L3/L4)
+  - 25-point security rubric (SAST, Dependencies, Secrets, OWASP, Architecture)
+  - 10-point abbreviated checklist for Level 2
+  - Verdict routing: PASS/CONDITIONAL → JUDGE, FAIL → BUILD
+- **PENTEST stage** — Dynamic penetration testing between VALIDATE and REFLECT (L3/L4)
+  - Attack surface mapping, auth/injection/API/input testing
+  - Severity classification (Critical/High/Medium/Low)
+  - Failure routing: code bugs → BUILD, config issues → INTEGRATE
+
+#### Claude Code Orchestrator
+- `/orchestrate` skill runs the full pipeline as multi-agent orchestration
+- SCAN and PENTEST subagent prompts integrated into orchestrator
+- Automatic verdict parsing and failure routing across all security stages
+
+#### Updated Complexity Routing
+- Level 1: VAN → BUILD → REFLECT (3 stages, unchanged)
+- Level 2: VAN → PLAN → BUILD → **SCAN** → JUDGE → REFLECT (6 stages)
+- Level 3: VAN → PLAN → CREATIVE → BUILD → **SCAN** → JUDGE → INTEGRATE → VALIDATE → **PENTEST** → REFLECT (10 stages)
+- Level 4: Full pipeline + ARCHIVE (11 stages)
+
+### 🔄 New Agent Roles
+- **Security Analyst** (SCAN) — SAST, dependency audit, secrets scanning, OWASP assessment
+- **Penetration Tester** (PENTEST) — Attack simulation, auth testing, injection probing, API security
+
+### 📚 Files Added
+- `.cursor/commands/scan.md` and `.cursor/commands/pentest.md`
+- `.cursor/rules/isolation_rules/visual-maps/scan-mode-map.mdc` and `pentest-mode-map.mdc`
+- `.claude/skills/orchestrate/SKILL.md` (with SCAN/PENTEST agent prompts)
+- `memory-bank/security/` output directory
+
+### 📝 Files Updated
+- `main.mdc` — Mode architecture, complexity routing, rule loading, reference maps
+- `agent-roles.mdc` — Security Analyst and Penetration Tester role definitions
+- `memory-bank-paths.mdc` — Security scan and pentest document paths
+- `workflow-level2.mdc` — SCAN phase added (8 phases total)
+- `workflow-level3.mdc` — SCAN and PENTEST phases added (12 phases total)
+- `workflow-level4.mdc` — SCAN and PENTEST phases added (12 phases total)
+- `README.md` and `USER_GUIDE.md` — Full documentation updates
+
+### 🔧 Requirements
+- Cursor version 2.0+ for Cursor commands
+- Claude Code for `/orchestrate` skill (optional)
+- No external security tools required — Claude reasoning handles analysis
+
+---
+
 ## Version 0.8 - Enhanced Commands and Workflow
 
 > Building upon the token-optimized workflows established in v0.7-beta, this release focuses on improved command integration and workflow enhancements.

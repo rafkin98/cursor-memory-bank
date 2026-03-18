@@ -1,5 +1,7 @@
 # Memory Bank System Optimizations
 
+> **Note:** This document was originally written for earlier versions of Memory Bank. As of v1.0, the system supports both Cursor IDE (11 `/commands`) and Claude Code (`/orchestrate` skill), and includes dedicated SCAN and PENTEST security stages in the pipeline.
+
 This document presents a comprehensive overview of the optimizations implemented to enhance the Memory Bank system's token efficiency, context management, and overall performance.
 
 ## 🚀 Core Optimizations
@@ -184,3 +186,7 @@ The optimizations have been designed to maintain full compatibility with the exi
 ---
 
 These optimizations maintain all the structured development benefits of the original Memory Bank system while significantly improving its efficiency and scalability.
+
+In v1.0, these optimizations apply to both platforms:
+- **Cursor IDE**: Hierarchical rule loading and progressive documentation are managed by the `.cursor/rules/` system
+- **Claude Code**: The `/orchestrate` skill applies the same principles through subagent prompts that load only stage-relevant context

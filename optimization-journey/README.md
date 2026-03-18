@@ -1,5 +1,7 @@
 # MEMORY BANK SYSTEM: OPTIMIZATION JOURNEY
 
+> **Note:** This is a historical development journal documenting how Memory Bank evolved through optimization rounds. As of v1.0, the system has expanded to an 11-stage pipeline with SCAN and PENTEST security stages, and supports both **Cursor IDE** (individual `/commands`) and **Claude Code** (`/orchestrate` skill).
+
 > **TL;DR:** The Memory Bank System evolved through multiple optimization rounds, from initial efficiency improvements to methodological integration with Claude's "Think" tool. The system now features mode-specific isolation, visual process maps, and a modular architecture that enables scalable, systematic development while maintaining context efficiency.
 
 ## 📑 TABLE OF CONTENTS
