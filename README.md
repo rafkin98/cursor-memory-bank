@@ -39,7 +39,7 @@ graph TD
     style Memory fill:#f9d77e,stroke:#d9b95c,color:black
 ```
 
-> **Personal Note**: Memory Bank is my personal hobby project that I develop for my own use in coding projects. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, you can ask Cursor AI or Claude Code directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
+> **Personal Note**: This project is my personal hobby project that I develop for my own use in coding projects. I originally took inspiration from and forked the excellent [cursor-memory-bank](https://github.com/vanzan01/cursor-memory-bank) project by `vanzan01`, then evolved this fork to support both **Cursor IDE** commands and **Claude Code** orchestration. As this is a personal project, I don't maintain an issues tracker or actively collect feedback. However, if you're using these rules and encounter issues, you can ask Cursor AI or Claude Code directly to modify or update the rules to better suit your specific workflow. The system is designed to be adaptable by the AI, allowing you to customize it for your own needs without requiring external support.
 
 ## About Memory Bank
 
