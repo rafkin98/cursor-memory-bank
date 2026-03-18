@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write",
+      "Edit",
+      "Agent",
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(pip:*)",
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(semgrep:*)",
+      "Bash(bandit:*)",
+      "Bash(gitleaks:*)",
+      "Bash(npm audit:*)",
+      "Bash(pip audit:*)"
+    ]
+  }
+}
